@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive browser fingerprinting, WebRTC ICE leak testing, and HTTP request header inspection laboratory.">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>What Your Browser Reveals — Browser Privacy &amp; Fingerprinting Lab</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="stylesheet" href="./css/tokens.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a class="brand-link" href="#top">
+        <svg class="brand-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <path d="M16 3L27 7.5V15.5C27 22.3 22.3 27.9 16 29.5C9.7 27.9 5 22.3 5 15.5V7.5L16 3Z" stroke="#22d3ee" stroke-width="2" fill="#0f1b2e"/>
+          <circle cx="16" cy="15.5" r="4" stroke="#10b981" stroke-width="2"/>
+          <circle cx="16" cy="15.5" r="1.4" fill="#22d3ee"/>
+        </svg>
+        <span>What Your Browser Reveals</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#module-fingerprint">Fingerprinting</a>
+        <a href="#module-webrtc">WebRTC Test</a>
+        <a href="#module-headers">HTTP Headers</a>
+        <a href="#privacy-notice">Privacy Notice</a>
+        <a href="#education">Education</a>
+      </nav>
+
+      <div class="nav-right">
+        <span id="nav-mode-pill" class="nav-mode-pill is-static">Mode: Static (GitHub Pages)</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section id="top" class="hero-section">
+      <div class="container">
+        <div class="hero-card">
+          <div class="hero-eyebrow">
+            <span class="hero-eyebrow-dot" aria-hidden="true"></span>
+            <span>BROWSER PRIVACY &amp; TELEMETRY LABORATORY</span>
+          </div>
+
+          <h1 class="hero-title">What Your Browser Reveals</h1>
+          <p class="hero-subtitle">
+            Discover what websites can learn about your device, network and browser without installing anything.
+          </p>
+
+          <div class="hero-trust-chips">
+            <span class="trust-chip">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path d="M10 2l7 3v5c0 4.2-2.9 7.5-7 8.5-4.1-1-7-4.3-7-8.5V5l7-3z"/>
+                <path d="M7.2 10.2l2 2 3.8-4"/>
+              </svg>
+              Zero Tracking &amp; Zero Storage
+            </span>
+            <span class="trust-chip">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <circle cx="10" cy="10" r="7"/>
+                <path d="M3 10h14M10 3a11 11 0 0 1 0 14M10 3a11 11 0 0 0 0 14"/>
+              </svg>
+              Real Browser, WebRTC &amp; HTTP APIs
+            </span>
+            <span class="trust-chip">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <rect x="3" y="4" width="14" height="10" rx="1.8"/>
+                <path d="M7 17h6"/>
+              </svg>
+              Runs Only When Triggered
+            </span>
+          </div>
+
+          <div class="hero-actions">
+            <button id="btn-run-all" type="button" class="btn btn-primary btn-hero">
+              <span class="btn-label">Run Privacy Analysis</span>
+            </button>
+            <button type="button" class="btn btn-secondary" data-action="reset-all">
+              Reset Results
+            </button>
+          </div>
+
+          <div class="summary-strip" aria-label="Module live summary">
+            <a href="#module-fingerprint" class="summary-item">
+              <span class="summary-label">01 // Fingerprinting</span>
+              <span id="summary-fp-status" class="summary-val">Idle — Click Run Analysis</span>
+            </a>
+            <a href="#module-webrtc" class="summary-item">
+              <span class="summary-label">02 // WebRTC ICE</span>
+              <span id="summary-rtc-status" class="summary-val">Idle — Click Run Analysis</span>
+            </a>
+            <a href="#module-headers" class="summary-item">
+              <span class="summary-label">03 // HTTP Headers</span>
+              <span id="summary-hdr-status" class="summary-val">Detecting Hosting Mode...</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="privacy-notice" class="privacy-banner-section" aria-label="Privacy and Transparency Notice">
+      <div class="container">
+        <div class="privacy-banner">
+          <div class="privacy-banner-head">
+            <div class="privacy-banner-title">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <circle cx="10" cy="10" r="8"/>
+                <path d="M10 9v5M10 6.2h.01"/>
+              </svg>
+              <span>Privacy &amp; Transparency Notice</span>
+            </div>
+            <button type="button" class="btn btn-small btn-secondary" data-action="reset-all">
+              Clear Session Results
+            </button>
+          </div>
+
+          <div class="privacy-banner-grid">
+            <div class="privacy-point">
+              <strong>Browser APIs (Local Only)</strong>
+              Browser, OS, display, hardware concurrency, device memory, and battery data are inspected locally via standard JS APIs. No persistent ID, canvas fingerprint, or audio fingerprint is generated.
+            </div>
+            <div class="privacy-point">
+              <strong>External IP Lookup Disclosure</strong>
+              Clicking scan triggers an HTTPS request from your browser to <code>ipwho.is</code> (with fallbacks to <code>get.geojs.io</code>, <code>freeipapi.com</code>, and <code>api64.ipify.org</code>), which receives your request and public IP to return approximate IP geolocation. Precise GPS requires a separate opt-in button.
+            </div>
+            <div class="privacy-point">
+              <strong>WebRTC STUN Testing</strong>
+              When initiated, WebRTC creates a temporary data-channel connection using <code>stun:stun.l.google.com:19302</code> to gather ICE candidates, then closes immediately without saving or sending candidates anywhere.
+            </div>
+            <div class="privacy-point">
+              <strong>Backend &amp; Data Retention</strong>
+              No cookies, no analytics, no localStorage, and no database persistence. In optional Node.js server mode, document headers are inspected in memory with Cookie/Authorization redacted by default and never logged or stored.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container modules-stack">
+      <article id="module-fingerprint" class="module-card" aria-label="Browser Fingerprinting Simulator"></article>
+      <article id="module-webrtc" class="module-card" aria-label="WebRTC Leak Tester"></article>
+      <article id="module-headers" class="module-card" aria-label="HTTP Header Inspector"></article>
+    </div>
+
+    <section id="education" class="education-section" aria-label="Educational Reference">
+      <div class="container">
+        <div class="section-heading-row">
+          <div class="section-kicker">REFERENCE // PRIVACY MECHANICS</div>
+          <h2 class="section-heading">How Web Telemetry &amp; Mitigations Work</h2>
+          <p class="section-lead">
+            Technical explanations of browser fingerprinting, network exposure, HTTP metadata, VPN routing behavior, and browser privacy defenses—with official MDN and W3C specifications.
+          </p>
+        </div>
+        <div id="education-grid-slot"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>What Your Browser Reveals</strong> — Open-source educational browser privacy lab. Zero analytics, zero tracking, zero third-party asset CDNs.
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/abhimanyu-wrk/abhimanyu-wrk.github.io" target="_blank" rel="noopener noreferrer">
+          GitHub Repository
+        </a>
+        <a href="#top">Back to Top</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- In Static GitHub Pages mode, this remains null.
+       In Optional Node.js Server mode, the Express server replaces `null` with safely escaped request metadata JSON. -->
+  <script id="__INITIAL_REQUEST_INSPECTION__" type="application/json">null</script>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

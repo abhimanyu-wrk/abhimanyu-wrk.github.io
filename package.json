@@ -1,0 +1,22 @@
+{
+  "name": "what-your-browser-reveals",
+  "version": "1.0.0",
+  "description": "Interactive browser fingerprinting, WebRTC leak testing, and HTTP header inspection privacy laboratory.",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.js",
+    "preview:static": "node scripts/static-preview.mjs",
+    "test": "node --test tests/*.test.js"
+  },
+  "keywords": [
+    "privacy",
+    "browser-fingerprinting",
+    "webrtc",
+    "http-headers",
+    "cybersecurity"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
